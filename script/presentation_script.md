@@ -1,6 +1,6 @@
 # Presentation Script: Energy-Aware Hybrid Recommender Systems Across the User Lifecycle
 
-Target length: about 20 minutes (25:55 estimated). Times are computed from the word count of each section at ~135 words per minute, plus ~3 s per click and ~5 s for pointing at plots. Spoken text: ~3,217 words.
+Target length: about 20 minutes (26:35 estimated). Times are computed from the word count of each section at ~135 words per minute, plus ~3 s per click and ~5 s for pointing at plots. Spoken text: ~3,297 words.
 `[click]` marks an overlay step on the same slide. `→ next slide` marks a new slide.
 
 | # | Slide | Words | Time | Running |
@@ -22,13 +22,13 @@ Target length: about 20 minutes (25:55 estimated). Times are computed from the w
 | 15 | Yelp: All Strategies | 157 | 1:20 | 17:05 |
 | 16 | Comparison of Strategies | 151 | 1:20 | 18:25 |
 | 17 | Yelp: Update Frequency | 189 | 1:30 | 19:55 |
-| 18 | MovieLens: Active Users per Update Window | 133 | 1:05 | 21:00 |
-| 19 | MovieLens: All Strategies | 96 | 0:50 | 21:50 |
-| 20 | MovieLens: Precision@10, All Strategies | 140 | 1:05 | 22:55 |
-| 21 | Pitfall: Per-User Split | 138 | 1:10 | 24:05 |
-| 22 | Conclusion | 105 | 0:50 | 24:55 |
-| 23 | Next Steps | 86 | 0:45 | 25:40 |
-| 24 | Acknowledgements | 31 | 0:15 | 25:55 |
+| 18 | MovieLens: Active Users per Update Window | 147 | 1:10 | 21:05 |
+| 19 | MovieLens: All Strategies | 96 | 0:50 | 21:55 |
+| 20 | MovieLens: Precision@10, All Strategies | 156 | 1:15 | 23:10 |
+| 21 | Pitfall: Per-User Split | 139 | 1:10 | 24:20 |
+| 22 | Conclusion | 105 | 0:50 | 25:10 |
+| 23 | Next Steps | 135 | 1:10 | 26:20 |
+| 24 | Acknowledgements | 31 | 0:15 | 26:35 |
 
 ---
 
@@ -282,7 +282,7 @@ To find the point where extra emissions stop paying off, I used knee detection. 
 
 → next slide
 
-## 18. MovieLens: Active Users per Update Window (1:05)
+## 18. MovieLens: Active Users per Update Window (1:10)
 
 Now MovieLens, which tells a very different story. Let's start again with who is in the stream.
 
@@ -302,7 +302,7 @@ And this is expensive to ignore: full retraining costs about 790 times more per 
 
 → next slide
 
-## 20. MovieLens: Precision@10, All Strategies (1:05)
+## 20. MovieLens: Precision@10, All Strategies (1:15)
 
 The backfilling we just saw also shows up in the metrics, so I want to show Precision@10 next to the recall plot. While recall stayed roughly flat, precision looks completely different: it first rises, then drops sharply.  That is exactly when new users stop arriving.
 
@@ -334,7 +334,7 @@ So my main takeaway is this: before choosing an update strategy, diagnose the so
 
 → next slide
 
-## 23. Next Steps (0:45)
+## 23. Next Steps (1:10)
 
 There are several directions for future work.
 
