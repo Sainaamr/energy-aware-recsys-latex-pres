@@ -286,7 +286,7 @@ To find the point where extra emissions stop paying off, I used knee detection. 
 
 Now MovieLens, which tells a very different story. Let's start again with who is in the stream.
 
-Compared to Yelp, a much larger share of the activity comes from new unique users, the orange part. But they almost stop arriving after about 100,000 interactions. Here, that is not caused by my filter: MovieLens-1M only contains users who joined in 2000, while the data runs until early 2003, so the later part of the stream is sparse.
+Compared to Yelp, a much larger share of the activity comes from new unique users, the orange part. But they almost stop arriving after about 100,000 interactions. Here, that is not caused by my filter. MovieLens-1M is already filtered by its creators: it only contains users with at least 20 ratings, all of whom joined in 2000, while the data runs until early 2003. So the later part of the stream is sparse.
 
 The users also behave differently. They tend to rate many movies in one session when they sign up, backfilling their history. For a typical new user, 98 percent of their ratings arrive in their first batch, compared to 20 percent on Yelp. And 48 percent of new users never appear again; on Yelp, that is 12 percent.
 
@@ -304,9 +304,9 @@ And this is expensive to ignore: full retraining costs about 790 times more per 
 
 ## 20. MovieLens: Precision@10, All Strategies (1:05)
 
-This is the one place where the metrics tell a different story, so I want to show Precision@10 as well. Precision first rises, then drops sharply, from about 0.13 to about 0.04, between 80,000 and 100,000 interactions. That is exactly when new users stop arriving.
+The backfilling we just saw also shows up in the metrics, so I want to show Precision@10 next to the recall plot. While recall stayed roughly flat, precision looks completely different: it first rises, then drops sharply.  That is exactly when new users stop arriving.
 
-This is the backfilling again. While new users are arriving, each one brings most of their history in a single batch, so they have many relevant items at once, and precision, which always divides by 10, goes up. NDCG behaves the same way. Once new users stop arriving, both fall. Recall is barely affected, because it divides by the number of relevant items, so the extra items appear on both sides of the fraction.
+Why the difference? While new users are arriving, each one backfills most of their history in a single batch, so in that batch they have many relevant items at once. Precision always divides by 10, so more relevant items push it up. NDCG behaves the same way. Recall divides by the number of relevant items instead, so the extra items appear on both sides of the fraction and largely cancel out. Once new users stop arriving, the backfilling stops, and precision and NDCG fall, while recall stays where it was.
 
 Notice also that the drop hits all five strategies equally. It's a property of the data, not of any update strategy.
 
