@@ -1,0 +1,73 @@
+% !TeX root = ../main.tex
+% Add the above to each file to make compiling the PDF easier in some editors.
+
+\begin{frame}
+    \vspace*{\fill}
+    \begin{center}
+        \Huge \textcolor{TUMBlue}{Appendix}
+    \end{center}
+\end{frame}
+
+\appendix
+
+
+\begin{frame}{Yelp: Precision@10, All Strategies}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.95\linewidth]{yelptimecut_strategy_comparison_precision.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Yelp: NDCG@10, All Strategies}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.95\linewidth]{yelptimecut_strategy_comparison_ndcg.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Yelp: New Unique Users per Update Window}
+    \begin{figure}[h]
+        \centering
+        \includegraphics<1>[width=0.95\linewidth]{yelptimecut_new_user_analysis_new_user_arrivals.pdf}%
+        \includegraphics<2>[width=0.95\linewidth]{yelptimecutunfiltered_new_user_analysis_new_user_arrivals.pdf}%
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Yelp: Emissions by Phase}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.7\linewidth]{yelptimecut_energy_summary_stacked.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Yelp: Update Frequency Variants}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.95\linewidth]{yelptimecut_content_incremental_frequency_comparison_recall.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{MovieLens: New Unique Users per Update Window}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.95\linewidth]{ml1mtimecut_new_user_analysis_new_user_arrivals.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Carbon Cost per Strategy}
+    \begin{table}[h]
+\centering
+\def\arraystretch{1.6}%  1 is the default, change whatever you need
+\begin{tabular}{lcccc}
+\toprule
+ & No-Update & Incremental & Content-Init & \makecell{Content +\\Incremental} \\
+\midrule
+Yelp streaming & 95{,}306 & 125{,}053 & 112{,}422 & 138{,}321 \\
+Yelp training & \multicolumn{4}{c}{1{,}832{,}436} \\
+MovieLens streaming & 17{,}286 & 18{,}654 & 20{,}045 & 22{,}618 \\
+MovieLens training & \multicolumn{4}{c}{188{,}839} \\
+\bottomrule
+\end{tabular}
+\caption*{Carbon emissions in mg CO$_2$eq. Full retrain on MovieLens: 1{,}387{,}568 streaming, $792\times$ incremental per update.}
+\end{table}
+\end{frame}

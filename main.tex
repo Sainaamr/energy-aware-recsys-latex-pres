@@ -1,0 +1,52 @@
+%%
+% This is an Overleaf template for presentations
+% using the TUM Corporate Desing https://www.tum.de/cd
+%
+% For further details on how to use the template, take a look at our
+% GitLab repository and browse through our test documents
+% https://gitlab.lrz.de/latex4ei/tum-templates.
+%
+% The tumbeamer class is based on the beamer class.
+% If you need further customization please consult the beamer class guide
+% https://ctan.org/pkg/beamer.
+% Additional class options are passed down to the base class.
+%%
+
+
+\documentclass[
+  english,            % define the document language (english, german)
+  aspectratio=169,    % define the aspect ratio (169, 43)
+  % handout=2on1,       % create handout with multiple slides (2on1, 4on1)
+  % partpage=false,     % insert page at beginning of parts (true, false)
+  sectionpage=false,   % insert page at beginning of sections (true, false)
+]{tumbeamer}
+
+\input{settings}
+
+
+% presentation metadata
+\title[Energy-Aware Hybrid Recommender Systems]{Energy-Aware Hybrid\\Recommender Systems\\Across the User Lifecycle}
+\subtitle{}
+\author{\theAuthorName}
+
+\institute{\theChairName\\\theDepartmentName\\\theUniversityName}
+\date{\today} % TODO: set presentation date
+
+\footline{\insertauthor~|~\insertshorttitle~|~\insertshortdate}
+
+
+\begin{document}
+
+\maketitle
+
+\input{chapters/01_introduction}
+\input{chapters/02_background}
+\input{chapters/03_methodology}
+\input{chapters/04_results}
+\input{chapters/05_discussion}
+% TODO: add more chapters here
+
+\input{pages/acknowledgements}
+\input{pages/appendix}
+
+\end{document}

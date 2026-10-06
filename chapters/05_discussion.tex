@@ -1,0 +1,44 @@
+% !TeX root = ../main.tex
+% Add the above to each file to make compiling the PDF easier in some editors.
+
+\section{Discussion}
+
+
+\begin{frame}{Pitfall: Per-User Split}
+    \begin{figure}[h]
+        \centering
+        \includegraphics<1>[width=0.95\linewidth]{yelp_strategy_comparison_recall.pdf}%
+        \includegraphics<2>[width=0.95\linewidth]{yelptimecut_strategy_comparison_recall.pdf}%
+    \end{figure}
+    \footnotetext{\fullcite{ji2023leakage}}
+\end{frame}
+
+
+\begin{frame}{Conclusion}
+    \setbeamercovered{transparent}
+    \begin{center}
+        \vspace{5mm}
+        \Large Cheap updates recover most of the lost quality at a fraction of the training cost, but only where the data has something to correct\\
+        \vspace{7mm}
+        \pause
+        \Huge$\Downarrow$\\
+        \vspace{7mm}
+        \LARGE Diagnose the source of decay before choosing an update strategy
+    \end{center}
+\end{frame}
+
+
+\begin{frame}{Next Steps}
+    \setbeamercovered{transparent}
+    \begin{itemize}
+        \large
+        \setlength\itemsep{1.5em}
+        \item Causal incremental graph convolution (CI-LightGCN), measured in energy rather than time\footnote{\fullcite{ding2022causal}}
+        \pause
+        \item Windowed graph construction to bound the update cost\footnote{\fullcite{ghiye2024rolling}}
+        \pause
+        \item Streams with controlled, documented drift\footnote{\fullcite{souza2020benchmarking}}
+        \pause
+        \item More datasets with less strict interaction filtering
+    \end{itemize}
+\end{frame}

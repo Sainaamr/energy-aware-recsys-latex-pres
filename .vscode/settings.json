@@ -1,0 +1,11 @@
+{
+  "latex-workshop.latex.outDir": "%DIR%/build",
+  "latex-workshop.latex.tools": [
+    { "name": "make-pdf", "command": "make", "args": ["pdf"] }
+  ],
+  "latex-workshop.latex.recipes": [
+    { "name": "make pdf", "tools": ["make-pdf"] }
+  ],
+  "latex-workshop.latex.autoBuild.run": "never",
+  "latex-workshop.view.pdf.viewer": "tab"
+}

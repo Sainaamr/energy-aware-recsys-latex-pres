@@ -1,0 +1,111 @@
+% !TeX root = ../main.tex
+% Add the above to each file to make compiling the PDF easier in some editors.
+
+\begin{frame}{LightGCN}
+    \large
+    \begin{columns}
+    \begin{column}{0.5\linewidth}
+        \vspace{5mm}
+        \begin{center}
+        \begin{tikzpicture}[
+            u/.style={circle,draw=TUMBlue,fill=TUMBlue!15,thick,minimum size=7mm},
+            i/.style={rectangle,draw=TUMOrange,fill=TUMOrange!15,thick,minimum size=6mm}]
+            \node[u] (u1) at (0,2) {$u_1$};
+            \node[u] (u2) at (0,1) {$u_2$};
+            \node[u] (u3) at (0,0) {$u_3$};
+            \node[i] (i1) at (2.5,2.3) {$i_1$};
+            \node[i] (i2) at (2.5,1.5) {$i_2$};
+            \node[i] (i3) at (2.5,0.7) {$i_3$};
+            \node[i] (i4) at (2.5,-0.1) {$i_4$};
+            \draw[thick] (u1)--(i1) (u1)--(i2) (u2)--(i2) (u2)--(i3) (u3)--(i3) (u3)--(i4);
+        \end{tikzpicture}
+        \end{center}
+        \begin{center}
+            User--Item Interaction Graph
+        \end{center}
+    \end{column}
+    \begin{column}{0.5\linewidth}
+        \vspace{10mm}
+        \begin{center}
+            Neighborhood aggregation:
+        \end{center}
+        \[
+            \mathbf{e}_u^{(k)} = \sum_{i \in \mathcal{N}_u} \frac{1}{\sqrt{|\mathcal{N}_u|}\sqrt{|\mathcal{N}_i|}} \mathbf{e}_i^{(k-1)}
+        \]
+        \begin{center}
+            Prediction: $\hat{y}_{ui} = \mathbf{e}_u^\top \mathbf{e}_i$\\
+        \end{center}
+    \end{column}
+    \begin{column}{0.1\linewidth}
+    \end{column}
+    \end{columns}
+    \footnotetext{\fullcite{lightgcn}}
+\end{frame}
+
+
+\begin{frame}{Measuring Carbon Emissions}
+    \setbeamercovered{transparent}
+    \large
+    \begin{columns}
+    \begin{column}{0.4\linewidth}
+        \vspace{8mm}
+        \begin{center}
+            CPU and RAM energy estimated\\with CodeCarbon
+        \end{center}
+    \end{column}
+    \begin{column}{0.5\linewidth}
+        \vspace{11mm}
+        \pause
+        \begin{align*}
+            \text{emissions} &= C \cdot E \\
+            \pause
+            \vspace{5mm}\\
+            C &= \sum_{s \in S} e_s \cdot p_s
+        \end{align*}
+        \begin{center}
+            $C$ (Germany) = 381\,g\,CO$_2$eq/kWh
+        \end{center}
+    \end{column}
+    \begin{column}{0.1\linewidth}
+    \end{column}
+    \end{columns}
+    \footnotetext{\fullcite{codecarbon-methodology}}
+\end{frame}
+
+
+\begin{frame}{Content Signal: Geohash}
+    \vspace{5mm}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.45\textwidth]{geohash.png}
+    \end{figure}
+    \blfootnote{\fullcite{niemeyer2008geohash}}
+\end{frame}
+
+
+\begin{frame}{Comparison of Methods}
+    \setbeamercovered{transparent}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{center}
+                \Large \textcolor{TUMBlue}{Incremental Update:}\\
+                \vspace{3mm}
+                \LARGE Keeps trained users up to date
+            \end{center}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{center}
+                \Large \textcolor{TUMBlue}{Content-Based Initialization:}\\
+                \vspace{3mm}
+                \LARGE Places users the model has never seen
+            \end{center}
+        \end{column}
+    \end{columns}
+    \vspace{3mm}
+    \pause
+    \begin{center}
+        \Huge $\Downarrow$\\
+        \vspace{6mm}
+        \LARGE Combine both and compare quality against carbon emissions
+    \end{center}
+\end{frame}

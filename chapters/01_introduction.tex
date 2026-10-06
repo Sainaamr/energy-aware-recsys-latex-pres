@@ -1,0 +1,45 @@
+% !TeX root = ../main.tex
+% Add the above to each file to make compiling the PDF easier in some editors.
+
+\section{Introduction and Background}
+
+
+\begin{frame}{Introduction}
+    \setbeamercovered{transparent}
+  \begin{columns}
+      \begin{column}{0.65\textwidth}
+          \vspace{4mm}
+          \begin{itemize}
+              \large
+        \setlength\itemsep{1.5em}
+            \item<1-> Recommender models are becoming more expensive without proportionate gains in quality\footnotemark
+            \item<2-> A recommender is not trained once: new users arrive and preferences shift, so the model must be kept up to date
+            \item<3-> The recurring carbon cost of keeping it current has not been measured
+          \end{itemize}
+      \end{column}
+      \begin{column}{0.35\textwidth}
+          \vspace{-4mm}
+          \begin{center}
+          \onslide<2->{%
+          \begin{tikzpicture}[>=Stealth, box/.style={draw=TUMBlue, thick, rounded corners, minimum width=26mm, minimum height=8mm, align=center}]
+              \node[box, fill=TUMBlue!15] (t) at (0,0) {Train};
+              \node[box] (d) at (0,-1.5) {Deploy};
+              \node[box] (s) at (0,-3.0) {New interactions};
+              \node[box, draw=TUMOrange, fill=TUMOrange!15] (u) at (0,-4.5) {Update?};
+              \draw[->, thick] (t) -- (d);
+              \draw[->, thick] (d) -- (s);
+              \draw[->, thick] (s) -- (u);
+              \draw[->, thick] (u.east) -- ++(0.6,0) |- (d.east);
+          \end{tikzpicture}}
+          \end{center}
+      \end{column}
+  \end{columns}
+\footnotetext[1]<1->{\fullcite{spillo2023sustainability}\\\fullcite{vente2024clicks}}
+\end{frame}
+
+\begin{frame}{Central Research Question}
+    \vspace*{\fill}
+    \begin{center}
+        \huge What does it cost to keep a recommender up to date, and can a cheaper hybrid mechanism deliver comparable quality?
+    \end{center}
+\end{frame}

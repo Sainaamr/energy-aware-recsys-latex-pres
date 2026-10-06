@@ -1,0 +1,31 @@
+% !TeX root = ../main.tex
+% Add the above to each file to make compiling the PDF easier in some editors.
+
+\begin{frame}{Methodology}
+    \setbeamercovered{transparent}
+    \vspace{5mm}
+    \begin{itemize}
+        \Large
+        \setlength\itemsep{1.5em}
+        \item Split Yelp and MovieLens along the global timeline: 80\% training, 20\% streamed in batches
+        \pause
+        \item Compare no-update, incremental, content-based initialization, their combination and full retraining
+        \pause
+        \item Measure Recall@10 per batch and emissions per phase with CodeCarbon
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Content-Based Initialization}
+    \setbeamercovered{transparent}
+    \vspace{5mm}
+    \begin{itemize}
+        \Large
+        \setlength\itemsep{1.5em}
+        \item Profile trained users by location (geohash) and category counts
+        \pause
+        \item Score a new user against them: $S = 0.7 \cdot \text{geo} + 0.3 \cdot \text{category}$
+        \pause
+        \item Initialize with the weighted average of the top-20 most similar users' embeddings
+    \end{itemize}
+\end{frame}

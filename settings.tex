@@ -1,0 +1,113 @@
+% load additional packages
+\usepackage{booktabs}
+
+\usepackage{siunitx}
+\usepackage{makecell}
+\usepackage{multirow}
+
+%TODO: change font
+\usepackage[sc]{mathpazo}
+
+\usepackage[%
+    style=phys,%
+    autocite=plain,%
+    articletitle=false,biblabel=brackets,%
+    chaptertitle=false,pageranges=false%
+]
+{biblatex}
+
+\bibliography{bibliography}
+
+% hide "(visited on ...)" access dates in citations
+\AtEveryCitekey{\clearfield{urlyear}\clearfield{urlmonth}\clearfield{urlday}}
+\AtEveryBibitem{\clearfield{urlyear}\clearfield{urlmonth}\clearfield{urlday}}
+
+
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+\usepackage[beamer,customcolors]{hf-tikz}
+
+\tikzset{hl/.style={
+    set fill color=green!80!black!20,
+    set border color=green!80!black,
+  },
+}
+
+\tikzset{iv/.style={
+    set fill color=white!00,
+    set border color=green!00,
+  },
+}
+
+\usetikzlibrary{arrows.meta}
+
+% .:: Title page diagram
+% ----------------------------------------------------------------------------
+% "TUM diagram" title page style: the "TUM tower" layout, with the tower image
+% replaced by the TikZ drawing in figures/title_diagram.tex.
+
+\definecolor{TitleLightBlue}{HTML}{B7CCE2}
+\definecolor{TitleDarkBlue}{HTML}{8FA6C9}
+\definecolor{TitleOlive}{HTML}{CDD394}
+\definecolor{TitleOrange}{HTML}{E9B695}
+\definecolor{TitleRed}{HTML}{DD9C9C}
+
+\makeatletter
+\defbeamertemplate{background}{TUM diagram}{
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[anchor=north east, inner sep=0, outer sep=0]
+      at (\paperwidth-\@tum@hmargin@, -\@tum@vmargin@)
+      {\theTUMLogo[height=\@tum@logoheight@, color=\@tum@logocolor@]};
+    \node[anchor=south east, inner sep=0, outer sep=0]
+      at (\paperwidth-\@tum@hmargin@, -\paperheight+\@tum@vmargin@)
+      {\resizebox{!}{0.62\paperheight}{\input{figures/title_diagram}}};
+  \end{tikzpicture}
+}[action]{
+  \pgfmathparse{.5\textwidth*\pgfkeysvalueof{/TUM/beamer/setup/tower scale}}
+  \setlength{\@tum@towerwidth@}{\pgfmathresult pt}
+  \if@tum@widescreen@
+    \setlength{\@tum@titlewidth@}{.8\textwidth}
+    \setlength{\@tum@authorwidth@}{\textwidth-\@tum@towerwidth@}
+  \else
+    \setlength{\@tum@titlewidth@}{\textwidth}
+    \setlength{\@tum@authorwidth@}{\textwidth-.9\@tum@towerwidth@}
+  \fi
+}
+
+\pgfqkeys{/TUM/beamer/setup/title page}{
+  TUM diagram/.code = {
+      \setTUMframestyle{title page}{
+        \setbeamertemplate{background canvas}[TUM default]
+        \setbeamertemplate{background}[TUM diagram]
+        \setbeamertemplate{title page}[TUM default]
+      }
+    },
+}
+\makeatother
+
+
+% macro to configure the style of the presentation
+\TUMbeamersetup{
+  title page = TUM diagram,       % style of the title page
+  part page = TUM toc,            % style of part pages
+  section page = TUM toc,         % style of section pages
+  content page = TUM more space,  % style of normal content pages
+  tower scale = 1.15,              % scaling factor of TUM tower (if used)
+  headline = TUM empty,      % which variation of headline to use
+  footline = TUM empty,         % which variation of footline to use
+  % configure on which pages headlines and footlines should be printed
+  headline on = {title page},
+  footline on = {title page=false},
+}
+
+
+\graphicspath{
+    {figures/}
+    {logos/}
+}
+

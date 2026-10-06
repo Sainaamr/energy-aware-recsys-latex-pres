@@ -1,0 +1,83 @@
+% !TeX root = ../main.tex
+% Add the above to each file to make compiling the PDF easier in some editors.
+
+\section{Results}
+
+
+\begin{frame}{Yelp: No-Update vs. Incremental Update}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.95\linewidth]{yelptimecut_no_update_vs_incremental_recall_at_10.pdf}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}{Yelp: Existing vs. New Users}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.95\linewidth]{yelptimecut_new_user_analysis_recall.pdf}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}{Yelp: Content-Based Initialization}
+    \begin{figure}[h]
+        \centering
+        \includegraphics<1>[width=0.95\linewidth]{yelptimecut_content_coldstart_vs_no_update_overall_recall.pdf}%
+        \includegraphics<2>[width=0.95\linewidth]{yelptimecut_content_coldstart_vs_no_update_groups_recall.pdf}%
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}{Yelp: All Strategies}
+    \begin{figure}[h]
+        \centering
+        \includegraphics<1>[width=0.95\linewidth]{yelptimecut_strategy_comparison_recall.pdf}%
+        \includegraphics<2>[width=0.95\linewidth]{yelptimecut_content_init_vs_content_incremental_recall.pdf}%
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}{Comparison of Strategies}
+    \Large
+    \vspace*{\fill}
+    \begin{table}[h]
+\centering
+\def\arraystretch{2}%  1 is the default, change whatever you need
+\begin{tabular}{lcccc}
+\toprule
+& No-Update & Incremental & Content-Init & \makecell{Content +\\Incremental} \\
+\midrule
+Recall@10
+& 0.0125
+& \tikzmarkin<2>[hl]{a}(0.1,0.6)(0.1,-0.3) +91\% \tikzmarkend{a}
+& \tikzmarkin<3>[hl]{b}(0.1,0.6)(0.1,-0.3) +41\% \tikzmarkend{b}
+& \tikzmarkin<4>[hl]{c}(0.1,0.6)(0.1,-0.3) +106\% \tikzmarkend{c} \\
+\makecell[l]{Emissions\\(\% of training)}
+& 5.20\%
+& \tikzmarkin<5>[hl]{d}(0.1,0.6)(0.1,-0.3) 6.82\%
+& 6.14\%
+& 7.55\% \tikzmarkend{d} \\
+\bottomrule
+\end{tabular}
+\caption*{\large Mean Recall@10 (relative to no-update) and streaming emissions as a share of the one-time training cost on Yelp}
+\end{table}
+\end{frame}
+
+
+\begin{frame}{Yelp: Update Frequency vs. Emissions}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.42\linewidth]{yelptimecut_content_incremental_quality_vs_energy_recall.pdf}
+    \end{figure}
+    \footnotetext{\fullcite{satopaa2011kneedle}}
+\end{frame}
+
+
+\begin{frame}{MovieLens: All Strategies}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.95\linewidth]{ml1mtimecut_strategy_comparison_recall.pdf}
+    \end{figure}
+    \footnotetext{\fullcite{harper2015movielens}}
+\end{frame}
