@@ -1,6 +1,6 @@
 # Presentation Script: Energy-Aware Hybrid Recommender Systems Across the User Lifecycle
 
-Target length: about 20 minutes (24:15 estimated). Times are computed from the word count of each section at ~135 words per minute, plus ~3 s per click and ~5 s for pointing at plots. Spoken text: ~3,012 words.
+Target length: about 20 minutes (25:55 estimated). Times are computed from the word count of each section at ~135 words per minute, plus ~3 s per click and ~5 s for pointing at plots. Spoken text: ~3,217 words.
 `[click]` marks an overlay step on the same slide. `→ next slide` marks a new slide.
 
 | # | Slide | Words | Time | Running |
@@ -22,11 +22,13 @@ Target length: about 20 minutes (24:15 estimated). Times are computed from the w
 | 15 | Yelp: All Strategies | 157 | 1:20 | 17:05 |
 | 16 | Comparison of Strategies | 151 | 1:20 | 18:25 |
 | 17 | Yelp: Update Frequency | 189 | 1:30 | 19:55 |
-| 18 | MovieLens: All Strategies | 164 | 1:20 | 21:15 |
-| 19 | Pitfall: Per-User Split | 138 | 1:10 | 22:25 |
-| 20 | Conclusion | 105 | 0:50 | 23:15 |
-| 21 | Next Steps | 86 | 0:45 | 24:00 |
-| 22 | Acknowledgements | 31 | 0:15 | 24:15 |
+| 18 | MovieLens: Active Users per Update Window | 133 | 1:05 | 21:00 |
+| 19 | MovieLens: All Strategies | 96 | 0:50 | 21:50 |
+| 20 | MovieLens: Precision@10, All Strategies | 140 | 1:05 | 22:55 |
+| 21 | Pitfall: Per-User Split | 138 | 1:10 | 24:05 |
+| 22 | Conclusion | 105 | 0:50 | 24:55 |
+| 23 | Next Steps | 86 | 0:45 | 25:40 |
+| 24 | Acknowledgements | 31 | 0:15 | 25:55 |
 
 ---
 
@@ -280,19 +282,37 @@ To find the point where extra emissions stop paying off, I used knee detection. 
 
 → next slide
 
-## 18. MovieLens: All Strategies (1:20)
+## 18. MovieLens: Active Users per Update Window (1:05)
 
-Now MovieLens, which tells a very different story.
+Now MovieLens, which tells a very different story. Let's start again with who is in the stream.
 
-Here, all five strategies are nearly indistinguishable for most of the stream, including full retraining. Only at the very end does the combined strategy pull slightly ahead.
+Compared to Yelp, a much larger share of the activity comes from new unique users, the orange part. But they almost stop arriving after about 100,000 interactions. Here, that is not caused by my filter: MovieLens-1M only contains users who joined in 2000, while the data runs until early 2003, so the later part of the stream is sparse.
 
-The reason lies in how people use MovieLens. Users tend to rate many movies in one session when they sign up. For a typical new user, 98 percent of their ratings arrive in their first batch, and 48 percent of new users never appear again. On Yelp, that number is 12 percent. So by the time an update could help a user, that user is usually gone. There is simply nothing for the update to correct. On top of that, MovieLens-1M only contains users who joined in 2000, so the later part of the stream has very few interactions.
+The users also behave differently. They tend to rate many movies in one session when they sign up, backfilling their history. For a typical new user, 98 percent of their ratings arrive in their first batch, compared to 20 percent on Yelp. And 48 percent of new users never appear again; on Yelp, that is 12 percent.
+
+→ next slide
+
+## 19. MovieLens: All Strategies (0:50)
+
+What does this mean for the strategies? Here is Recall@10. All five strategies are nearly indistinguishable for most of the stream, including full retraining. Only at the very end does the combined strategy pull slightly ahead.
+
+The reason is what we just saw: by the time an update could help a user, that user is usually gone. There is simply nothing for the update to correct.
 
 And this is expensive to ignore: full retraining costs about 790 times more per update than incremental updating, and about 7.6 times more over the whole lifecycle, without better recommendations.
 
 → next slide
 
-## 19. Pitfall: Per-User Split (1:10)
+## 20. MovieLens: Precision@10, All Strategies (1:05)
+
+This is the one place where the metrics tell a different story, so I want to show Precision@10 as well. Precision first rises, then drops sharply, from about 0.13 to about 0.04, between 80,000 and 100,000 interactions. That is exactly when new users stop arriving.
+
+This is the backfilling again. While new users are arriving, each one brings most of their history in a single batch, so they have many relevant items at once, and precision, which always divides by 10, goes up. NDCG behaves the same way. Once new users stop arriving, both fall. Recall is barely affected, because it divides by the number of relevant items, so the extra items appear on both sides of the fraction.
+
+Notice also that the drop hits all five strategies equally. It's a property of the data, not of any update strategy.
+
+→ next slide
+
+## 21. Pitfall: Per-User Split (1:10)
 
 One lesson from this work concerns evaluation itself.
 
@@ -304,7 +324,7 @@ With the correct global timeline split, the picture changes completely: the froz
 
 → next slide
 
-## 20. Conclusion (0:50)
+## 22. Conclusion (0:50)
 
 To conclude: cheap update strategies recover most of the quality a frozen model loses, at a small fraction of the training cost, but only where the data actually has something to correct. On Yelp, keeping the model current cost between 6 and 7.6 percent of training and improved recall by 41 to 106 percent.
 
@@ -314,7 +334,7 @@ So my main takeaway is this: before choosing an update strategy, diagnose the so
 
 → next slide
 
-## 21. Next Steps (0:45)
+## 23. Next Steps (0:45)
 
 There are several directions for future work.
 
@@ -334,7 +354,7 @@ And finally, more datasets with less strict filtering, where I expect content-ba
 
 → next slide
 
-## 22. Acknowledgements (0:15)
+## 24. Acknowledgements (0:15)
 
 I'd like to thank the Chair of Connected Mobility, my examiner, Prof. Jörg Ott, and my advisor, Prof. Wolfgang Wörndl.
 
