@@ -73,6 +73,35 @@
 \end{frame}
 
 
+\begin{frame}{Evaluation Metrics}
+    \setbeamercovered{transparent}
+    \large
+    \begin{columns}
+    \begin{column}{0.4\linewidth}
+        \vspace{10mm}
+        \begin{center}
+            Per batch: score all items,\\mask items already seen,\\recommend the top 10\\
+            \vspace{5mm}
+            Relevant: items the user\\liked in this batch
+        \end{center}
+    \end{column}
+    \begin{column}{0.5\linewidth}
+        \pause
+        \begin{align*}
+            \text{Precision@}10 &= \frac{\text{relevant items retrieved}}{\text{10}} \\[9mm]
+            \pause
+            \text{Recall@}10 &= \frac{\text{relevant items retrieved}}{\text{relevant items}} \\[9mm]
+            \pause
+            \text{NDCG@}10 &= \frac{\text{hits, weighted by rank}}{\text{best possible ranking}}
+        \end{align*}
+    \end{column}
+    \begin{column}{0.1\linewidth}
+    \end{column}
+    \end{columns}
+    \footnotetext{\fullcite{manning2008introduction}}
+\end{frame}
+
+
 \begin{frame}{Content Signal: Geohash}
     \vspace{5mm}
     \begin{figure}[h]

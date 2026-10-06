@@ -1,6 +1,6 @@
 # Presentation Script: Energy-Aware Hybrid Recommender Systems Across the User Lifecycle
 
-Target length: about 20 minutes (20:55 estimated). Times are computed from the word count of each section at ~135 words per minute, plus ~3 s per click and ~5 s for pointing at plots. Spoken text: ~2,591 words.
+Target length: about 20 minutes (22:35 estimated). Times are computed from the word count of each section at ~135 words per minute, plus ~3 s per click and ~5 s for pointing at plots. Spoken text: ~2,791 words.
 `[click]` marks an overlay step on the same slide. `→ next slide` marks a new slide.
 
 | # | Slide | Words | Time | Running |
@@ -8,23 +8,24 @@ Target length: about 20 minutes (20:55 estimated). Times are computed from the w
 | 1 | Title | 63 | 0:30 | 0:30 |
 | 2 | Introduction | 183 | 1:25 | 1:55 |
 | 3 | Central Research Question | 65 | 0:30 | 2:25 |
-| 4 | LightGCN | 159 | 1:10 | 3:35 |
-| 5 | Measuring Carbon Emissions | 137 | 1:05 | 4:40 |
-| 6 | Content Signal: Geohash | 92 | 0:40 | 5:20 |
-| 7 | Comparison of Methods | 95 | 0:45 | 6:05 |
-| 8 | Methodology | 150 | 1:15 | 7:20 |
-| 9 | Content-Based Initialization | 187 | 1:30 | 8:50 |
-| 10 | Yelp: No-Update vs. Incremental | 153 | 1:15 | 10:05 |
-| 11 | Yelp: Existing vs. New Users | 154 | 1:15 | 11:20 |
-| 12 | Yelp: Content-Based Initialization | 132 | 1:05 | 12:25 |
-| 13 | Yelp: All Strategies | 157 | 1:20 | 13:45 |
-| 14 | Comparison of Strategies | 151 | 1:20 | 15:05 |
-| 15 | Yelp: Update Frequency | 189 | 1:30 | 16:35 |
-| 16 | MovieLens: All Strategies | 164 | 1:20 | 17:55 |
-| 17 | Pitfall: Per-User Split | 138 | 1:10 | 19:05 |
-| 18 | Conclusion | 105 | 0:50 | 19:55 |
-| 19 | Next Steps | 86 | 0:45 | 20:40 |
-| 20 | Acknowledgements | 31 | 0:15 | 20:55 |
+| 4 | LightGCN | 171 | 1:15 | 3:40 |
+| 5 | Measuring Carbon Emissions | 137 | 1:05 | 4:45 |
+| 6 | Evaluation Metrics | 134 | 1:10 | 5:55 |
+| 7 | Content Signal: Geohash | 92 | 0:40 | 6:35 |
+| 8 | Comparison of Methods | 149 | 1:10 | 7:45 |
+| 9 | Methodology | 150 | 1:15 | 9:00 |
+| 10 | Content-Based Initialization | 187 | 1:30 | 10:30 |
+| 11 | Yelp: No-Update vs. Incremental | 153 | 1:15 | 11:45 |
+| 12 | Yelp: Existing vs. New Users | 154 | 1:15 | 13:00 |
+| 13 | Yelp: Content-Based Initialization | 132 | 1:05 | 14:05 |
+| 14 | Yelp: All Strategies | 157 | 1:20 | 15:25 |
+| 15 | Comparison of Strategies | 151 | 1:20 | 16:45 |
+| 16 | Yelp: Update Frequency | 189 | 1:30 | 18:15 |
+| 17 | MovieLens: All Strategies | 164 | 1:20 | 19:35 |
+| 18 | Pitfall: Per-User Split | 138 | 1:10 | 20:45 |
+| 19 | Conclusion | 105 | 0:50 | 21:35 |
+| 20 | Next Steps | 86 | 0:45 | 22:20 |
+| 21 | Acknowledgements | 31 | 0:15 | 22:35 |
 
 ---
 
@@ -60,13 +61,13 @@ Behind this are four more specific questions: the carbon cost of staying current
 
 → next slide
 
-## 4. LightGCN (1:10)
+## 4. LightGCN (1:15)
 
 The model I use throughout is LightGCN, a widely used graph-based collaborative filtering recommender.
 
 On the left, you see the idea. Users and items are nodes in a graph, and every interaction, for example a user reviewing a business, is an edge between them.
 
-Each user and item has an embedding, a vector of numbers. On the right is the core operation: in each layer, a node's embedding is updated as a normalized average of its neighbors' embeddings. So a user is described by the items they interacted with, and an item by the users who interacted with it.
+Each user and item has an embedding, a vector of numbers, in this case 64 numbers per user and per item. On the right is the core operation: in each layer, a node's embedding is updated as a normalized average of its neighbors' embeddings. So a user is described by the items they interacted with, and an item by the users who interacted with it.
 
 To predict whether a user will like an item, we simply take the dot product of their two embeddings, and the items with the highest scores are recommended.
 
@@ -92,7 +93,27 @@ I also don't just record one total per run. I track each phase separately: the g
 
 → next slide
 
-## 6. Content Signal: Geohash (0:40)
+## 6. Evaluation Metrics (1:10)
+
+To measure quality, I evaluate every batch as it arrives, before the model learns from it. For each user in the batch, the model scores all items, removes the ones the user has already interacted with, and recommends the top 10. The relevant items are the ones the user actually liked in that batch.
+
+`[click]`
+
+Precision@10 asks: of the 10 recommended items, how many were relevant?
+
+`[click]`
+
+Recall@10 asks the opposite: of all relevant items, how many did we recommend?
+
+`[click]`
+
+And NDCG@10 also looks at the order. A hit at rank 1 counts more than a hit at rank 10, and the score is normalized by the best possible ranking, so it lies between 0 and 1.
+
+All three behave very similarly in my results, so I'll show Recall@10 throughout; the others are in the appendix.
+
+→ next slide
+
+## 7. Content Signal: Geohash (0:40)
 
 For the content-based part, I need a way to describe items by their attributes. On Yelp, each business has a location as latitude and longitude. Raw coordinates are hard to compare, so I use geohash.
 
@@ -100,7 +121,7 @@ Geohash divides the map into rectangles and assigns each a short string. Nearby 
 
 → next slide
 
-## 7. Comparison of Methods (0:45)
+## 8. Comparison of Methods (1:10)
 
 So I have two mechanisms that address different problems.
 
@@ -112,11 +133,11 @@ Content-based initialization places users the model has never seen, using the co
 
 Neither one alone covers both sources of quality decay. So I combine them, and compare every option not only by recommendation quality, but by quality against carbon emissions.
 
-Hybrid recommenders are not new. But the usual designs, weighted or switching hybrids, train a second model next to the first, which adds cost. My hybrid trains nothing extra.
+Hybrid recommenders are not new. But the usual designs, weighted or switching hybrids, train a second model next to the first, which adds cost. They are also not designed with sustainability in mind: a survey of 76 hybrid systems found that their computational cost is rarely even reported, and none of the hybrids I reviewed is used to reduce or postpone retraining. My hybrid trains nothing extra, and it is designed specifically to keep the carbon cost of staying up to date low.
 
 → next slide
 
-## 8. Methodology (1:15)
+## 9. Methodology (1:15)
 
 Here is how the experiments work.
 
@@ -132,7 +153,7 @@ For every batch, I measure Recall@10, and I record emissions separately for each
 
 → next slide
 
-## 9. Content-Based Initialization (1:30)
+## 10. Content-Based Initialization (1:30)
 
 Let me explain the content-based initializer, since it's the main new component.
 
@@ -154,7 +175,7 @@ The important point is that this fits no additional model. It only counts and av
 
 → next slide
 
-## 10. Yelp: No-Update vs. Incremental Update (1:15)
+## 11. Yelp: No-Update vs. Incremental Update (1:15)
 
 Now the results, starting with Yelp.
 
@@ -170,7 +191,7 @@ So clearly, updating matters. But the question is why the frozen model decays.
 
 → next slide
 
-## 11. Yelp: Existing vs. New Users (1:15)
+## 12. Yelp: Existing vs. New Users (1:15)
 
 To find out, I split the evaluation into two groups: users the model was trained on, and new users.
 
@@ -184,7 +205,7 @@ So on Yelp, a large part of the quality decay is a cold-start problem, not just 
 
 → next slide
 
-## 12. Yelp: Content-Based Initialization (1:05)
+## 13. Yelp: Content-Based Initialization (1:05)
 
 Here is content-based initialization against no-update. Note that neither strategy retrains.
 
@@ -198,7 +219,7 @@ Split by group, existing users are unchanged, as expected, since only new users'
 
 → next slide
 
-## 13. Yelp: All Strategies (1:20)
+## 14. Yelp: All Strategies (1:20)
 
 Now all strategies together.
 
@@ -214,7 +235,7 @@ Split by group, the combined strategy does something interesting. After about 80
 
 → next slide
 
-## 14. Comparison of Strategies (1:20)
+## 15. Comparison of Strategies (1:20)
 
 Let me summarize the numbers. The first row is recall relative to the frozen baseline.
 
@@ -240,7 +261,7 @@ Interestingly, the largest single cost is not the training steps at all, but gro
 
 → next slide
 
-## 15. Yelp: Update Frequency vs. Emissions (1:30)
+## 16. Yelp: Update Frequency vs. Emissions (1:30)
 
 So far, updates happened every 20 batches, which was an arbitrary choice. Here I varied the update frequency of the combined strategy across ten settings, from every single batch to every 270 batches.
 
@@ -250,7 +271,7 @@ To find the point where extra emissions stop paying off, I used knee detection. 
 
 → next slide
 
-## 16. MovieLens: All Strategies (1:20)
+## 17. MovieLens: All Strategies (1:20)
 
 Now MovieLens, which tells a very different story.
 
@@ -262,7 +283,7 @@ And this is expensive to ignore: full retraining costs about 790 times more per 
 
 → next slide
 
-## 17. Pitfall: Per-User Split (1:10)
+## 18. Pitfall: Per-User Split (1:10)
 
 One lesson from this work concerns evaluation itself.
 
@@ -274,7 +295,7 @@ With the correct global timeline split, the picture changes completely: the froz
 
 → next slide
 
-## 18. Conclusion (0:50)
+## 19. Conclusion (0:50)
 
 To conclude: cheap update strategies recover most of the quality a frozen model loses, at a small fraction of the training cost, but only where the data actually has something to correct. On Yelp, keeping the model current cost between 6 and 7.6 percent of training and improved recall by 41 to 106 percent.
 
@@ -284,7 +305,7 @@ So my main takeaway is this: before choosing an update strategy, diagnose the so
 
 → next slide
 
-## 19. Next Steps (0:45)
+## 20. Next Steps (0:45)
 
 There are several directions for future work.
 
@@ -304,7 +325,7 @@ And finally, more datasets with less strict filtering, where I expect content-ba
 
 → next slide
 
-## 20. Acknowledgements (0:15)
+## 21. Acknowledgements (0:15)
 
 I'd like to thank the Chair of Connected Mobility, my examiner, Prof. Jörg Ott, and my advisor, Prof. Wolfgang Wörndl.
 
