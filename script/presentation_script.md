@@ -109,7 +109,7 @@ Recall@10 asks the opposite: of all relevant items, how many did we recommend?
 
 And NDCG@10 also looks at the order. A hit at rank 1 counts more than a hit at rank 10, and the score is normalized by the best possible ranking, so it lies between 0 and 1.
 
-All three behave very similarly in my results, so I'll show Recall@10 throughout; the others are in the appendix.
+In most of my results, all three tell the same story, so I'll show Recall@10 throughout, and the others are in the appendix. Where precision or NDCG tell a different story, I'll point it out on that slide.
 
 → next slide
 
@@ -141,7 +141,7 @@ Hybrid recommenders are not new. But the usual designs, weighted or switching hy
 
 Here is how the experiments work.
 
-I use two datasets, Yelp and MovieLens. Both are ordered by timestamp. The first 80 percent is used to train the base LightGCN model, and the remaining 20 percent is streamed in batches of 1,000 interactions to simulate a live system. Splitting along the global timeline guarantees the model never sees data from the future; I'll come back to this at the end.
+I use two datasets, Yelp and MovieLens. Both are ordered by timestamp. The first 80 percent is used to train the base LightGCN model, and the remaining 20 percent is streamed in batches of 1,000 interactions to simulate a real time system. Splitting along the global timeline guarantees the model never sees data from the future; I'll come back to this at the end.
 
 `[click]`
 
@@ -163,11 +163,11 @@ First, after training, I build a profile for every trained user: how often they 
 
 `[click]`
 
-When a new user arrives, I compare their first interactions with these profiles. For each bucket, I take the smaller of the two counts and sum them up, so a trained user can't look similar just because they have a huge count in one bucket. The similarity score weights location at 0.7 and category at 0.3, since location is the stronger signal on Yelp.
+When a new user arrives, I compare their first interactions with these profiles. For each bucket, I take the smaller of the two counts and sum them up, so a trained user can't look similar just because they have a huge count in one bucket. The similarity score weights location at 0.7 and category at 0.3, since location is the stronger signal on Yelp. In this small example, user 3 overlaps most with the new user, then user 1.
 
 `[click]`
 
-Then I take the 20 most similar trained users and initialize the new user's embedding as a weighted average of theirs.
+Then I take the 20 most similar trained users and initialize the new user's embedding as a weighted average of theirs, with the normalized scores as weights. Here, with just the top two users, that is 0.6 times user 3 plus 0.4 times user 1.
 
 This initialization happens only once per user. After that, the embedding is refined only by normal training updates.
 
