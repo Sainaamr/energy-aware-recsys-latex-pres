@@ -1,21 +1,25 @@
 % Title-page diagram: recommender-system challenges around sustainability.
 % Drawn with TikZ and \input by the title page background in settings.tex.
+% Symmetric around the origin: \sx/\sy place the side and top/bottom ellipses.
 \begin{tikzpicture}[scale=1.35,
     challenge/.style={draw=black, line width=0.4pt, fill opacity=0.75, text opacity=1},
     caption/.style={anchor=center, inner sep=2pt, font=\sffamily\fontsize{16}{19}\selectfont, text=black},
   ]
-  % side ellipses
-  \draw[challenge, fill=TitleOlive]  (1.58,-3.45) ellipse (0.82 and 2.55);
-  \draw[challenge, fill=TitleOrange] (6.10,-3.50) ellipse (0.90 and 2.55);
-  % top and bottom ellipses
-  \draw[challenge, fill=TitleLightBlue] (3.95,-1.05) ellipse (2.30 and 0.65);
-  \draw[challenge, fill=TitleDarkBlue]  (3.90,-5.80) ellipse (2.40 and 0.70);
-  % centre
-  \draw[fill=TitleRed, draw=red!80!black, dashed, line width=0.8pt] (3.85,-3.30) circle (1.30);
+  \def\sx{2.35}  % horizontal offset of the side ellipses
+  \def\sy{2.35}  % vertical offset of the top and bottom ellipses
 
-  \node[caption] at (3.95,-0.95) {Cold-start};
-  \node[caption] at (1.58,-3.30) {Sparsity};
-  \node[caption] at (6.10,-3.30) {Accuracy};
-  \node[caption] at (3.90,-5.75) {Scalability};
-  \node[caption] at (3.85,-3.35) {Sustainability};
+  % side ellipses
+  \draw[challenge, fill=TitleOlive]  (-\sx,0) ellipse (0.95 and 2.55);
+  \draw[challenge, fill=TitleOrange] ( \sx,0) ellipse (0.95 and 2.55);
+  % top and bottom ellipses
+  \draw[challenge, fill=TitleLightBlue] (0, \sy) ellipse (2.35 and 0.68);
+  \draw[challenge, fill=TitleDarkBlue]  (0,-\sy) ellipse (2.35 and 0.68);
+  % centre
+  \draw[fill=TitleRed, draw=red!80!black, dashed, line width=0.8pt] (0,0) circle (1.30);
+
+  \node[caption] at (0, \sy) {Cold-start};
+  \node[caption] at (-\sx,0) {Sparsity};
+  \node[caption] at ( \sx,0) {Accuracy};
+  \node[caption] at (0,-\sy) {Scalability};
+  \node[caption] at (0,0)    {Sustainability};
 \end{tikzpicture}
