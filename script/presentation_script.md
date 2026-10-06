@@ -314,7 +314,7 @@ Notice also that the drop hits all five strategies equally. It's a property of t
 
 ## 21. Pitfall: Per-User Split (1:10)
 
-One lesson from this work concerns evaluation itself.
+One lesson from this work concerns data preparation itself.
 
 My first experiments used a per-user split, which is common in the literature; only about 12 percent of surveyed papers split by time. This plot shows those results. The frozen model barely decays, because the training data already contains information from the future. Incremental updating gains only 11 percent, and incremental and content-init look roughly equal.
 
@@ -338,7 +338,7 @@ So my main takeaway is this: before choosing an update strategy, diagnose the so
 
 There are several directions for future work.
 
-First, CI-LightGCN, which reports large speedups over full retraining, but measured in time, not energy.
+First, CI-LightGCN, a causal incremental version of LightGCN. Instead of retraining on the full graph, it reuses the stored embeddings from the previous model and only processes the new part of the graph. Its authors report retraining more than 30 times faster than full retraining while even exceeding its accuracy, but they measured time, not energy, so its actual carbon savings are still open.
 
 `[click]`
 
