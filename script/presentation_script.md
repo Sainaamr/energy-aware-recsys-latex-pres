@@ -1,6 +1,6 @@
 # Presentation Script: Energy-Aware Hybrid Recommender Systems Across the User Lifecycle
 
-Target length: about 20 minutes (22:35 estimated). Times are computed from the word count of each section at ~135 words per minute, plus ~3 s per click and ~5 s for pointing at plots. Spoken text: ~2,791 words.
+Target length: about 20 minutes (24:15 estimated). Times are computed from the word count of each section at ~135 words per minute, plus ~3 s per click and ~5 s for pointing at plots. Spoken text: ~3,012 words.
 `[click]` marks an overlay step on the same slide. `→ next slide` marks a new slide.
 
 | # | Slide | Words | Time | Running |
@@ -10,22 +10,23 @@ Target length: about 20 minutes (22:35 estimated). Times are computed from the w
 | 3 | Central Research Question | 65 | 0:30 | 2:25 |
 | 4 | LightGCN | 171 | 1:15 | 3:40 |
 | 5 | Measuring Carbon Emissions | 137 | 1:05 | 4:45 |
-| 6 | Evaluation Metrics | 134 | 1:10 | 5:55 |
-| 7 | Content Signal: Geohash | 92 | 0:40 | 6:35 |
-| 8 | Comparison of Methods | 149 | 1:10 | 7:45 |
-| 9 | Methodology | 150 | 1:15 | 9:00 |
-| 10 | Content-Based Initialization | 187 | 1:30 | 10:30 |
-| 11 | Yelp: No-Update vs. Incremental | 153 | 1:15 | 11:45 |
-| 12 | Yelp: Existing vs. New Users | 154 | 1:15 | 13:00 |
-| 13 | Yelp: Content-Based Initialization | 132 | 1:05 | 14:05 |
-| 14 | Yelp: All Strategies | 157 | 1:20 | 15:25 |
-| 15 | Comparison of Strategies | 151 | 1:20 | 16:45 |
-| 16 | Yelp: Update Frequency | 189 | 1:30 | 18:15 |
-| 17 | MovieLens: All Strategies | 164 | 1:20 | 19:35 |
-| 18 | Pitfall: Per-User Split | 138 | 1:10 | 20:45 |
-| 19 | Conclusion | 105 | 0:50 | 21:35 |
-| 20 | Next Steps | 86 | 0:45 | 22:20 |
-| 21 | Acknowledgements | 31 | 0:15 | 22:35 |
+| 6 | Evaluation Metrics | 153 | 1:15 | 6:00 |
+| 7 | Content Signal: Geohash | 92 | 0:40 | 6:40 |
+| 8 | Comparison of Methods | 149 | 1:10 | 7:50 |
+| 9 | Methodology | 151 | 1:15 | 9:05 |
+| 10 | Content-Based Initialization | 226 | 1:45 | 10:50 |
+| 11 | Yelp: No-Update vs. Incremental | 153 | 1:15 | 12:05 |
+| 12 | Yelp: Active Users per Update Window | 164 | 1:20 | 13:25 |
+| 13 | Yelp: Existing vs. New Users | 152 | 1:15 | 14:40 |
+| 14 | Yelp: Content-Based Initialization | 132 | 1:05 | 15:45 |
+| 15 | Yelp: All Strategies | 157 | 1:20 | 17:05 |
+| 16 | Comparison of Strategies | 151 | 1:20 | 18:25 |
+| 17 | Yelp: Update Frequency | 189 | 1:30 | 19:55 |
+| 18 | MovieLens: All Strategies | 164 | 1:20 | 21:15 |
+| 19 | Pitfall: Per-User Split | 138 | 1:10 | 22:25 |
+| 20 | Conclusion | 105 | 0:50 | 23:15 |
+| 21 | Next Steps | 86 | 0:45 | 24:00 |
+| 22 | Acknowledgements | 31 | 0:15 | 24:15 |
 
 ---
 
@@ -93,7 +94,7 @@ I also don't just record one total per run. I track each phase separately: the g
 
 → next slide
 
-## 6. Evaluation Metrics (1:10)
+## 6. Evaluation Metrics (1:15)
 
 To measure quality, I evaluate every batch as it arrives, before the model learns from it. For each user in the batch, the model scores all items, removes the ones the user has already interacted with, and recommends the top 10. The relevant items are the ones the user actually liked in that batch.
 
@@ -153,7 +154,7 @@ For every batch, I measure Recall@10, and I record emissions separately for each
 
 → next slide
 
-## 10. Content-Based Initialization (1:30)
+## 10. Content-Based Initialization (1:45)
 
 Let me explain the content-based initializer, since it's the main new component.
 
@@ -191,13 +192,21 @@ So clearly, updating matters. But the question is why the frozen model decays.
 
 → next slide
 
-## 12. Yelp: Existing vs. New Users (1:15)
+## 12. Yelp: Active Users per Update Window (1:20)
 
-To find out, I split the evaluation into two groups: users the model was trained on, and new users.
+To find out, I first looked at who is actually in the stream. This plot shows, for every update window of 20 batches, how many distinct users were active. Orange are new unique users, people we see for the very first time. Blue are returning users the model has already seen, either in training or in earlier batches.
 
-The result is striking. Over the whole stream, 41 percent of users are new, and they produce 45 percent of all interactions.
+On average, about 9 percent of the active users in a window appear for the first time, and you can see the orange part shrinking over the stream. That decline is partly an artifact of my 10-interaction filter: newer users have had less time to reach ten interactions. Without the filter, arrivals stay much more stable; that plot is in the appendix.
 
-And the model serves them badly. Remember that with mean initialization, every new user gets exactly the same embedding, so they all receive the same recommendations, no matter what they actually like.
+But this plot understates their weight, because a user only counts as "new unique" on their first appearance. Counting everyone who was not in the training data, 41 percent of users in the stream are new, and they produce 45 percent of all interactions.
+
+→ next slide
+
+## 13. Yelp: Existing vs. New Users (1:15)
+
+So almost half of the stream comes from users the model was never trained on. How well does the model serve them? To answer that, I split the evaluation into two groups: users the model was trained on, and new users.
+
+The answer is: badly. Remember that with mean initialization, every new user gets exactly the same embedding, so they all receive the same recommendations, no matter what they actually like.
 
 In this plot, the bottom line is new users. Their recall is about 70 percent below the overall average, and it stays at that level throughout, with no recovery. Existing users, the top line, perform above average but slowly decline over the stream, and the overall line follows them down. The new-user gap, however, stays constant.
 
@@ -205,7 +214,7 @@ So on Yelp, a large part of the quality decay is a cold-start problem, not just 
 
 → next slide
 
-## 13. Yelp: Content-Based Initialization (1:05)
+## 14. Yelp: Content-Based Initialization (1:05)
 
 Here is content-based initialization against no-update. Note that neither strategy retrains.
 
@@ -219,7 +228,7 @@ Split by group, existing users are unchanged, as expected, since only new users'
 
 → next slide
 
-## 14. Yelp: All Strategies (1:20)
+## 15. Yelp: All Strategies (1:20)
 
 Now all strategies together.
 
@@ -235,7 +244,7 @@ Split by group, the combined strategy does something interesting. After about 80
 
 → next slide
 
-## 15. Comparison of Strategies (1:20)
+## 16. Comparison of Strategies (1:20)
 
 Let me summarize the numbers. The first row is recall relative to the frozen baseline.
 
@@ -261,7 +270,7 @@ Interestingly, the largest single cost is not the training steps at all, but gro
 
 → next slide
 
-## 16. Yelp: Update Frequency vs. Emissions (1:30)
+## 17. Yelp: Update Frequency vs. Emissions (1:30)
 
 So far, updates happened every 20 batches, which was an arbitrary choice. Here I varied the update frequency of the combined strategy across ten settings, from every single batch to every 270 batches.
 
@@ -271,7 +280,7 @@ To find the point where extra emissions stop paying off, I used knee detection. 
 
 → next slide
 
-## 17. MovieLens: All Strategies (1:20)
+## 18. MovieLens: All Strategies (1:20)
 
 Now MovieLens, which tells a very different story.
 
@@ -283,7 +292,7 @@ And this is expensive to ignore: full retraining costs about 790 times more per 
 
 → next slide
 
-## 18. Pitfall: Per-User Split (1:10)
+## 19. Pitfall: Per-User Split (1:10)
 
 One lesson from this work concerns evaluation itself.
 
@@ -295,7 +304,7 @@ With the correct global timeline split, the picture changes completely: the froz
 
 → next slide
 
-## 19. Conclusion (0:50)
+## 20. Conclusion (0:50)
 
 To conclude: cheap update strategies recover most of the quality a frozen model loses, at a small fraction of the training cost, but only where the data actually has something to correct. On Yelp, keeping the model current cost between 6 and 7.6 percent of training and improved recall by 41 to 106 percent.
 
@@ -305,7 +314,7 @@ So my main takeaway is this: before choosing an update strategy, diagnose the so
 
 → next slide
 
-## 20. Next Steps (0:45)
+## 21. Next Steps (0:45)
 
 There are several directions for future work.
 
@@ -325,7 +334,7 @@ And finally, more datasets with less strict filtering, where I expect content-ba
 
 → next slide
 
-## 21. Acknowledgements (0:15)
+## 22. Acknowledgements (0:15)
 
 I'd like to thank the Chair of Connected Mobility, my examiner, Prof. Jörg Ott, and my advisor, Prof. Wolfgang Wörndl.
 
