@@ -23,6 +23,10 @@
 \AtEveryBibitem{\clearfield{urlyear}\clearfield{urlmonth}\clearfield{urlday}}
 
 
+% short, unnumbered citation in the slide footer; the full entry is listed
+% on the References slide in the appendix
+\newcommand\slidecite[2]{\nocite{#1}\blfootnote{#2}}
+
 \newcommand\blfootnote[1]{%
   \begingroup
   \renewcommand\thefootnote{}\footnote{#1}%
@@ -45,6 +49,12 @@
 }
 
 \usetikzlibrary{arrows.meta}
+
+% TikZ overlay helpers: `faded on=<2->` draws a scope faded until that slide
+\tikzset{
+  alt/.code args={<#1>#2#3}{\alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}}},
+  faded on/.style={alt=#1{}{opacity=0.15}},
+}
 
 % .:: Title page diagram
 % ----------------------------------------------------------------------------

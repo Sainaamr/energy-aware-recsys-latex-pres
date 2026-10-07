@@ -28,7 +28,7 @@
 \end{frame}
 
 
-\begin{frame}{Yelp: Content-Based Initialization}
+\begin{frame}{Yelp: No-Update vs. Content-Based Initialization}
     \begin{figure}[h]
         \centering
         \includegraphics<1>[width=0.95\linewidth]{yelptimecut_content_coldstart_vs_no_update_overall_recall.pdf}%
@@ -68,7 +68,6 @@ Recall@10
 & 7.55\% \tikzmarkend{d} \\
 \bottomrule
 \end{tabular}
-\caption*{\large Mean Recall@10 (relative to no-update) and streaming emissions as a share of the one-time training cost on Yelp}
 \end{table}
 \end{frame}
 
@@ -78,7 +77,7 @@ Recall@10
         \centering
         \includegraphics[width=0.42\linewidth]{yelptimecut_content_incremental_quality_vs_energy_recall.pdf}
     \end{figure}
-    \footnotetext{\fullcite{satopaa2011kneedle}}
+    \slidecite{satopaa2011kneedle}{Satop\"a\"a et al., ICDCS Workshops 2011}
 \end{frame}
 
 
@@ -87,7 +86,7 @@ Recall@10
         \centering
         \includegraphics[width=0.95\linewidth]{ml1mtimecut_new_user_analysis_new_user_arrivals.pdf}
     \end{figure}
-    \footnotetext{\fullcite{harper2015movielens}}
+    \slidecite{harper2015movielens}{Harper \& Konstan, ACM TiiS 2015}
 \end{frame}
 
 

@@ -10,7 +10,7 @@
         \includegraphics<1>[width=0.95\linewidth]{yelp_strategy_comparison_recall.pdf}%
         \includegraphics<2>[width=0.95\linewidth]{yelptimecut_strategy_comparison_recall.pdf}%
     \end{figure}
-    \footnotetext{\fullcite{ji2023leakage}}
+    \slidecite{ji2023leakage}{Ji et al., ACM TOIS 2023}
 \end{frame}
 
 
@@ -18,7 +18,7 @@
     \setbeamercovered{transparent}
     \begin{center}
         \vspace{5mm}
-        \Large Cheap updates recover most of the lost quality at a fraction of the training cost, but only where the data has something to correct\\
+        \Large Cheap updates recover most lost quality, but only where there is decay to correct\\
         \vspace{7mm}
         \pause
         \Huge$\Downarrow$\\
@@ -33,12 +33,13 @@
     \begin{itemize}
         \large
         \setlength\itemsep{1.5em}
-        \item Causal incremental graph convolution (CI-LightGCN), measured in energy rather than time\footnote{\fullcite{ding2022causal}}
+        \item Causal incremental graph convolution (CI-LightGCN), measured in energy rather than time
         \pause
-        \item Windowed graph construction to bound the update cost\footnote{\fullcite{ghiye2024rolling}}
+        \item Windowed graph construction to bound the update cost
         \pause
-        \item Streams with controlled, documented drift\footnote{\fullcite{souza2020benchmarking}}
+        \item Streams with controlled, documented drift
         \pause
         \item More datasets with less strict interaction filtering
     \end{itemize}
+    \slidecite{ding2022causal,ghiye2024rolling,souza2020benchmarking}{Ding et al., IEEE TNNLS 2024 \textperiodcentered{} Ghiye et al., ICAIF 2024 \textperiodcentered{} Souza et al., DMKD 2020}
 \end{frame}

@@ -1,34 +1,34 @@
 # Presentation Script: Energy-Aware Hybrid Recommender Systems Across the User Lifecycle
 
-Target length: about 20 minutes (26:35 estimated). Times are computed from the word count of each section at ~135 words per minute, plus ~3 s per click and ~5 s for pointing at plots. Spoken text: ~3,297 words.
+Target length: about 20 minutes (26:50 estimated). Times are computed from the word count of each section at ~135 words per minute, plus ~3 s per click and ~5 s for pointing at plots. Spoken text: ~3,323 words.
 `[click]` marks an overlay step on the same slide. `→ next slide` marks a new slide.
 
 | # | Slide | Words | Time | Running |
 |---|-------|------:|-----:|--------:|
 | 1 | Title | 63 | 0:30 | 0:30 |
-| 2 | Introduction | 183 | 1:25 | 1:55 |
+| 2 | Introduction | 180 | 1:25 | 1:55 |
 | 3 | Central Research Question | 65 | 0:30 | 2:25 |
 | 4 | LightGCN | 171 | 1:15 | 3:40 |
-| 5 | Measuring Carbon Emissions | 137 | 1:05 | 4:45 |
-| 6 | Evaluation Metrics | 153 | 1:15 | 6:00 |
-| 7 | Content Signal: Geohash | 92 | 0:40 | 6:40 |
-| 8 | Comparison of Methods | 149 | 1:10 | 7:50 |
-| 9 | Methodology | 151 | 1:15 | 9:05 |
-| 10 | Content-Based Initialization | 226 | 1:45 | 10:50 |
-| 11 | Yelp: No-Update vs. Incremental | 153 | 1:15 | 12:05 |
-| 12 | Yelp: Active Users per Update Window | 164 | 1:20 | 13:25 |
-| 13 | Yelp: Existing vs. New Users | 152 | 1:15 | 14:40 |
-| 14 | Yelp: Content-Based Initialization | 132 | 1:05 | 15:45 |
-| 15 | Yelp: All Strategies | 157 | 1:20 | 17:05 |
-| 16 | Comparison of Strategies | 151 | 1:20 | 18:25 |
-| 17 | Yelp: Update Frequency | 189 | 1:30 | 19:55 |
-| 18 | MovieLens: Active Users per Update Window | 147 | 1:10 | 21:05 |
-| 19 | MovieLens: All Strategies | 96 | 0:50 | 21:55 |
-| 20 | MovieLens: Precision@10, All Strategies | 156 | 1:15 | 23:10 |
-| 21 | Pitfall: Per-User Split | 139 | 1:10 | 24:20 |
-| 22 | Conclusion | 105 | 0:50 | 25:10 |
-| 23 | Next Steps | 135 | 1:10 | 26:20 |
-| 24 | Acknowledgements | 31 | 0:15 | 26:35 |
+| 5 | Measuring Carbon Emissions | 140 | 1:10 | 4:50 |
+| 6 | Evaluation Metrics | 153 | 1:15 | 6:05 |
+| 7 | Content Signals: Location and Category | 118 | 0:50 | 6:55 |
+| 8 | Content-Based Initialization | 223 | 1:45 | 8:40 |
+| 9 | Comparison of Methods | 152 | 1:10 | 9:50 |
+| 10 | Methodology | 151 | 1:15 | 11:05 |
+| 11 | Yelp: No-Update vs. Incremental | 153 | 1:15 | 12:20 |
+| 12 | Yelp: Active Users per Update Window | 164 | 1:20 | 13:40 |
+| 13 | Yelp: Existing vs. New Users | 152 | 1:15 | 14:55 |
+| 14 | Yelp: No-Update vs. Content-Init | 132 | 1:05 | 16:00 |
+| 15 | Yelp: All Strategies | 157 | 1:20 | 17:20 |
+| 16 | Comparison of Strategies | 151 | 1:20 | 18:40 |
+| 17 | Yelp: Update Frequency | 189 | 1:30 | 20:10 |
+| 18 | MovieLens: Active Users per Update Window | 147 | 1:10 | 21:20 |
+| 19 | MovieLens: All Strategies | 96 | 0:50 | 22:10 |
+| 20 | MovieLens: Precision@10, All Strategies | 156 | 1:15 | 23:25 |
+| 21 | Pitfall: Per-User Split | 139 | 1:10 | 24:35 |
+| 22 | Conclusion | 105 | 0:50 | 25:25 |
+| 23 | Next Steps | 135 | 1:10 | 26:35 |
+| 24 | Acknowledgements | 31 | 0:15 | 26:50 |
 
 ---
 
@@ -48,7 +48,7 @@ Over the last decade, the models behind them have become much more expensive to 
 
 `[click]`
 
-But there is a second point that these studies don't cover. A recommender is not trained once. After deployment, new users sign up, new items appear, and existing users change their preferences. So the model has to be kept up to date, as shown in the loop on the right: train, deploy, collect new interactions, and decide whether to update.
+But there is a second point that these studies don't cover. A recommender is not trained once. After deployment, new users sign up, new items appear, and existing users change their preferences. So the model has to be updated, as shown in the loop on the right: train, deploy, collect new interactions, and decide whether to update.
 
 `[click]`
 
@@ -78,7 +78,7 @@ LightGCN is deliberately simple, but it still propagates over the whole interact
 
 → next slide
 
-## 5. Measuring Carbon Emissions (1:05)
+## 5. Measuring Carbon Emissions (1:10)
 
 To measure cost, I use CodeCarbon, an open-source Python library. My server has no hardware energy counters, so CodeCarbon estimates CPU and RAM energy from utilization.
 
@@ -88,7 +88,7 @@ Emissions are the product of two factors: the energy consumed, E, and the carbon
 
 `[click]`
 
-Carbon intensity is a weighted average over the energy sources in the grid. For Germany, that is 381 grams of CO2-equivalent per kilowatt-hour.
+Carbon intensity is a weighted average over the energy sources in the grid, so it depends on where the server is located. For Germany, that is 381 grams of CO2-equivalent per kilowatt-hour.
 
 One honest caveat: these are estimates, not physical measurements. But all strategies are measured in exactly the same way, so comparisons between them are valid.
 
@@ -116,49 +116,19 @@ In most of my results, all three tell the same story, so I'll show Recall@10 thr
 
 → next slide
 
-## 7. Content Signal: Geohash (0:40)
+## 7. Content Signals: Location and Category (0:50)
 
 For the content-based part, I need a way to describe items by their attributes. On Yelp, each business has a location as latitude and longitude. Raw coordinates are hard to compare, so I use geohash.
 
 Geohash divides the map into rectangles and assigns each a short string. Nearby locations share the same prefix, as you see here, where all cells start with the same four characters. I use four-character geohashes, which is roughly a 39 by 20 kilometer area. This turns location into discrete buckets that can be counted and compared directly.
 
-→ next slide
-
-## 8. Comparison of Methods (1:10)
-
-So I have two mechanisms that address different problems.
-
-Incremental updating keeps users the model already knows up to date.
-
-Content-based initialization places users the model has never seen, using the content of the items they interact with.
-
-`[click]`
-
-Neither one alone covers both sources of quality decay. So I combine them, and compare every option not only by recommendation quality, but by quality against carbon emissions.
-
-Hybrid recommenders are not new. But the usual designs, weighted or switching hybrids, train a second model next to the first, which adds cost. They are also not designed with sustainability in mind: a survey of 76 hybrid systems found that their computational cost is rarely even reported, and none of the hybrids I reviewed is used to reduce or postpone retraining. My hybrid trains nothing extra, and it is designed specifically to keep the carbon cost of staying up to date low.
+The second signal is simpler: each business's category, for example restaurant or bar. On MovieLens, which has no locations, I use genre and release decade instead.
 
 → next slide
 
-## 9. Methodology (1:15)
+## 8. Content-Based Initialization (1:45)
 
-Here is how the experiments work.
-
-I use two datasets, Yelp and MovieLens. Both are ordered by timestamp. The first 80 percent is used to train the base LightGCN model, and the remaining 20 percent is streamed in batches of 1,000 interactions to simulate a real time system. Splitting along the global timeline guarantees the model never sees data from the future; I'll come back to this at the end.
-
-`[click]`
-
-I compare five strategies. No-update freezes the model and is the lower bound. Incremental update runs 30 training epochs every 20 batches, starting from the current model. Full retraining rebuilds the model from scratch, which is the expensive upper bound. Then there is content-based initialization, and finally the combination of content-based initialization with incremental updates.
-
-`[click]`
-
-For every batch, I measure Recall@10, and I record emissions separately for each phase of each strategy, so we can see where the cost actually goes.
-
-→ next slide
-
-## 10. Content-Based Initialization (1:45)
-
-Let me explain the content-based initializer, since it's the main new component.
+So how do I use these signals? This is the content-based initializer, the main new component of my work.
 
 Normally, a new user gets the average of all existing embeddings, so everyone new looks the same.
 
@@ -174,7 +144,39 @@ Then I take the 20 most similar trained users and initialize the new user's embe
 
 This initialization happens only once per user. After that, the embedding is refined only by normal training updates.
 
-The important point is that this fits no additional model. It only counts and averages, so it is very cheap. For MovieLens, genre replaces location and release decade replaces category.
+The important point is that this fits no additional model. It only counts and averages, so it is very cheap.
+
+→ next slide
+
+## 9. Comparison of Methods (1:10)
+
+So I have two mechanisms that address different problems.
+
+Incremental updating keeps users the model already knows up to date.
+
+Content-based initialization improves performance for users the model was never trained on, using the content of the items they interact with.
+
+`[click]`
+
+Neither one alone covers both sources of quality decay. So I combine them, and compare every option not only by recommendation quality, but by quality against carbon emissions.
+
+Hybrid recommenders are not new. But the usual designs, weighted or switching hybrids, train a second model next to the first, which adds cost. They are also not designed with sustainability in mind: a survey of 76 hybrid systems found that their computational cost is rarely even reported, and none of the hybrids I reviewed is used to reduce or postpone retraining. My hybrid trains nothing extra, and it is designed specifically to keep the carbon cost of staying up to date low.
+
+→ next slide
+
+## 10. Methodology (1:15)
+
+Here is how the experiments work.
+
+I use two datasets, Yelp and MovieLens. Both are ordered by timestamp. The first 80 percent is used to train the base LightGCN model, and the remaining 20 percent is streamed in batches of 1,000 interactions to simulate a real time system. Splitting along the global timeline guarantees the model never sees data from the future; I'll come back to this at the end.
+
+`[click]`
+
+I compare five strategies. No-update freezes the model and is the lower bound. Incremental update runs 30 training epochs every 20 batches, starting from the current model. Full retraining rebuilds the model from scratch, which is the expensive upper bound. Then there is content-based initialization, and finally the combination of content-based initialization with incremental updates.
+
+`[click]`
+
+For every batch, I measure Recall@10, and I record emissions separately for each phase of each strategy, so we can see where the cost actually goes.
 
 → next slide
 
@@ -216,7 +218,7 @@ So on Yelp, a large part of the quality decay is a cold-start problem, not just 
 
 → next slide
 
-## 14. Yelp: Content-Based Initialization (1:05)
+## 14. Yelp: No-Update vs. Content-Based Initialization (1:05)
 
 Here is content-based initialization against no-update. Note that neither strategy retrains.
 
