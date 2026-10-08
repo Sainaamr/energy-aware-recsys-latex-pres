@@ -17,3 +17,4 @@
 *.synctex.gz
 *.toc
 *.vrb
+/script/build/

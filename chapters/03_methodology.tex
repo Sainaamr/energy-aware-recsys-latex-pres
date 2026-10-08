@@ -10,7 +10,92 @@
         \item Split Yelp and MovieLens along the global timeline: 80\% training, 20\% streamed in batches
         \pause
         \item Compare no-update, incremental, content-based initialization, their combination, and full retraining
-        \pause
-        \item Measure Recall@10 per batch and emissions per phase with CodeCarbon
     \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Content Signals: Location and Category}
+    \begin{columns}
+    \begin{column}{0.5\linewidth}
+        \begin{figure}[h]
+            \centering
+            \includegraphics[width=0.9\linewidth]{geohash.png}
+        \end{figure}
+    \end{column}
+    \begin{column}{0.45\linewidth}
+        \begin{itemize}
+            \large
+            \setlength\itemsep{1.5em}
+            \item \textbf{Location:} geohash cells, nearby businesses share a prefix
+            \item \textbf{Category:} business category
+            \item MovieLens: genre and release decade instead
+        \end{itemize}
+    \end{column}
+    \end{columns}
+    \slidecite{niemeyer2008geohash,geohash-softeng}{Niemeyer, geohash.org, 2008 \textperiodcentered{} Figure: Geohash Explorer, geohash.softeng.co}
+\end{frame}
+
+
+\begin{frame}{Content-Based Initialization}
+    \vspace{2mm}
+    \begin{center}
+    \resizebox{0.98\textwidth}{!}{%
+    \begin{tikzpicture}[
+        >=Stealth,
+        cell/.style={draw=TUMGray, minimum size=5mm, inner sep=0pt, font=\scriptsize},
+        lbl/.style={font=\small},
+        stage/.style={font=\bfseries, text=TUMBlue, anchor=center},
+    ]
+
+    % ---------------- 1: profiles of trained users ----------------
+    \node[stage] at (1.4,3.3) {1\;\; Profile trained users};
+    \foreach \b in {1,...,4} {
+        \node[lbl, font=\scriptsize] at (0.25+0.5*\b,2.3) {$g_{\b}$};
+    }
+    \foreach \u/\row in {1/{3,0,1,0},2/{0,2,0,1},3/{1,0,4,0},4/{0,0,1,2}} {
+        \node[lbl] at (0.1,2.25-0.5*\u) {$u_{\u}$};
+        \foreach \v [count=\b] in \row {
+            \pgfmathtruncatemacro{\shade}{min(\v*20,80)}
+            \ifnum\shade>50 \node[cell, fill=TUMBlue!\shade, text=white] at (0.25+0.5*\b,2.25-0.5*\u) {\v};\else \node[cell, fill=TUMBlue!\shade] at (0.25+0.5*\b,2.25-0.5*\u) {\v};\fi
+        }
+    }
+    \node[lbl, align=center, text width=4.2cm] at (1.4,-0.75) {check-ins per geohash\\(same for categories)};
+
+    % ---------------- 2: similarity to the new user ----------------
+    \begin{scope}[faded on=<2->]
+    \draw[->, thick, TUMGray] (2.9,1.0) -- (4.1,1.0);
+    \node[stage] at (6.0,3.3) {2\;\; Score similarity};
+    \node[lbl, anchor=east] at (4.85,2.3) {new user};
+    \foreach \v [count=\b] in {1,0,2,0} {
+        \node[cell, fill=TUMOrange!40] at (4.65+0.5*\b,2.3) {\v};
+    }
+    % min-sum overlap scores: u1 = 2/3, u2 = 0, u3 = 1, u4 = 1/3
+    \foreach \u/\sc/\c in {1/0.67/TUMBlue,2/0.00/TUMGray,3/1.00/TUMBlue,4/0.33/TUMGray} {
+        \node[lbl] at (4.6,2.25-0.5*\u) {$u_{\u}$};
+        \fill[\c] (4.9,2.07-0.5*\u) rectangle ++(1.8*\sc+0.02,0.36);
+        \node[lbl, anchor=west, font=\scriptsize] at (4.95+1.8*\sc,2.25-0.5*\u) {\sc};
+    }
+    \node[lbl, align=center, text width=4.2cm] at (6.0,-0.75) {min-sum overlap\\$S = 0.7\cdot\text{geo} + 0.3\cdot\text{cat}$};
+
+    % ---------------- 3: weighted average of top users ----------------
+    \end{scope}
+
+    \begin{scope}[faded on=<3->]
+    \draw[->, thick, TUMGray] (7.6,1.0) -- (8.8,1.0);
+    \node[stage] at (10.7,3.3) {3\;\; Initialize embedding};
+    \foreach \w/\u/\y in {0.6/3/1.95,0.4/1/1.30} {
+        \node[lbl, anchor=east] at (9.9,\y) {$\w \times e_{u_{\u}}$};
+        \foreach \b in {1,...,4} {
+            \node[cell, fill=TUMBlue!35] at (9.75+0.5*\b,\y) {};
+        }
+    }
+    \draw[->, thick] (11.0,1.0) -- (11.0,0.55);
+    \node[lbl, anchor=east] at (9.9,0.2) {$e_{\text{new}}$};
+    \foreach \b in {1,...,4} {
+        \node[cell, fill=TUMOrange!60] at (9.75+0.5*\b,0.2) {};
+    }
+    \node[lbl, align=center, text width=4.4cm] at (10.7,-0.75) {weights = normalized scores\\of the top-$k$ users ($k = 20$)};
+    \end{scope}
+    \end{tikzpicture}}
+    \end{center}
 \end{frame}
