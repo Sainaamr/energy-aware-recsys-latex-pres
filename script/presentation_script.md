@@ -312,8 +312,7 @@ So my main takeaway is this: before choosing an update strategy, diagnose the so
 
 There are several directions for future work.
 
-First, CI-LightGCN, a causal incremental version of LightGCN. Instead of retraining on the full graph, it reuses the stored embeddings from the previous model and only processes the new part of the graph. Its authors report retraining more than 30 times faster than full retraining while even exceeding its accuracy, but they measured time, not energy, so its actual carbon savings are still open.
-
+First, CI-LightGCN, a causal incremental version of LightGCN. Instead of retraining on the full graph, it reuses the stored embeddings from the previous model and only processes the new part of the graph. The paper report a much faster retraining time.
 `[click]`
 
 Second, building the graph from a fixed time window, which would cap the size of the graph and therefore the cost of each update.
